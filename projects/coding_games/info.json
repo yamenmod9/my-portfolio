@@ -1,0 +1,19 @@
+{
+    "id": 2,
+    "title": "Coding Games Platform",
+    "category": "Educational",
+    "type": "Interactive Learning",
+    "color": "#C850C0",
+    "description": "Developed an interactive platform to teach coding through gamification. Users can learn programming concepts through fun challenges, puzzles, and competitive games that make learning to code enjoyable and engaging.",
+    "technologies": ["JavaScript", "React", "Node.js", "MongoDB"],
+    "image": "Screenshot 2025-05-17 235043.png",
+    "features": [
+        "Interactive coding challenges",
+        "Real-time competition",
+        "Progress tracking",
+        "Achievement system"
+    ],
+    "screenshots": [
+        "Screenshot 2025-05-17 235043.png"
+    ]
+} 
