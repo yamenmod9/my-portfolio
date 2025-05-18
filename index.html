@@ -52,23 +52,13 @@
     <section id="projects" class="featured-work">
         <h2 class="section-title">Featured Work</h2>
         
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div class="flash-messages">
-                    {% for message in messages %}
-                        <div class="message">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
-        
         <div class="project-cards">
             {% for project in projects %}
             <div class="project-card-wrapper">
-                <a href="{{ url_for('view_project', project_id=project.id) }}" class="project-card-link">
+                <a href="project/{{ project.id }}/" class="project-card-link">
                     <div class="project-card">
                         <div class="project-image-container">
-                            <img src="{{ url_for('project_image', project_id=project.id, filename=project.image) }}" alt="{{ project.title }}">
+                            <img src="projects/{{ project.dirname }}/{{ project.image }}" alt="{{ project.title }}">
                             <div class="project-overlay" style="background-color: {{ project.color }}80">
                                 <div class="project-category">{{ project.category }}</div>
                                 <div class="project-type">{{ project.type }}</div>
@@ -92,7 +82,7 @@
                 </a>
                 <div class="quick-rate">
                     <h4>Quick Rate</h4>
-                    <form action="{{ url_for('quick_rate_project', project_id=project.id) }}" method="post" class="quick-rate-form">
+                    <form action="#" method="post" class="quick-rate-form">
                         <div class="form-group">
                             <input type="text" name="name" placeholder="Your Name" required>
                         </div>
@@ -165,4 +155,4 @@
         </p>
     </footer>
 </body>
-</html> 
+</html>
