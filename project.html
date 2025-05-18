@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }} - MyPortfolio</title>
-    <link rel="stylesheet" href="static/css/style.css">
-    <link rel="stylesheet" href="static/css/project.css">
-    <script src="static/js/script.js" defer></script>
+    <link rel="stylesheet" href="../../../static/css/style.css">
+    <link rel="stylesheet" href="../../../static/css/project.css">
+    <script src="../../../static/js/script.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -14,10 +14,10 @@
         <nav class="navbar">
             <div class="logo">MyPortfolio</div>
             <ul class="nav-links">
-                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="../../../index.html">Home</a></li>
                 <li class="active"><a href="#">Projects</a></li>
-                <li><a href="{{ url_for('index') }}#about">About</a></li>
-                <li><a href="{{ url_for('index') }}#contact">Contact</a></li>
+                <li><a href="../../../index.html#about">About</a></li>
+                <li><a href="../../../index.html#contact">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -52,7 +52,7 @@
                     <div class="carousel-container">
                         {% for screenshot in project.screenshots %}
                         <div class="carousel-slide">
-                            <img src="{{ url_for('project_screenshot', project_id=project.id, filename=screenshot) }}" alt="{{ project.title }} Screenshot">
+                            <img src="../../../projects/{{ project.dirname }}/screenshots/{{ screenshot }}" alt="{{ project.title }} Screenshot">
                         </div>
                         {% endfor %}
                     </div>
@@ -67,7 +67,7 @@
             </div>
             {% else %}
             <div class="project-image">
-                <img src="{{ url_for('static', filename='images/projects/' + project.image) }}" alt="{{ project.title }}">
+                <img src="../../../static/images/projects/{{ project.image }}" alt="{{ project.title }}">
             </div>
             {% endif %}
             
@@ -130,17 +130,7 @@
         <section class="rating-section">
             <h2>Rate This Project</h2>
             
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="flash-messages">
-                        {% for message in messages %}
-                            <div class="message">{{ message }}</div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-            
-            <form action="{{ url_for('rate_project', project_id=project.id) }}" method="post" class="rating-form" id="ratingForm">
+            <form action="#" method="post" class="rating-form" id="ratingForm">
                 <div class="form-group">
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name" required>
@@ -208,7 +198,7 @@
         {% endif %}
         
         <div class="back-link">
-            <a href="{{ url_for('index') }}#projects">← Back to All Projects</a>
+            <a href="../../../index.html#projects">← Back to All Projects</a>
         </div>
     </main>
 
@@ -320,7 +310,61 @@
                     }
                 });
             }
+
+            // Carousel functionality
+            const carousel = document.querySelector('.carousel');
+            if (carousel) {
+                const container = carousel.querySelector('.carousel-container');
+                const slides = carousel.querySelectorAll('.carousel-slide');
+                const dots = carousel.querySelectorAll('.dot');
+                const prevBtn = carousel.querySelector('.prev');
+                const nextBtn = carousel.querySelector('.next');
+                
+                let currentIndex = 0;
+                const slideWidth = 100; // percentage
+                
+                // Set initial position
+                updateCarousel();
+                
+                // Event listeners
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex > 0) ? currentIndex - 1 : slides.length - 1;
+                    updateCarousel();
+                });
+                
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
+                    updateCarousel();
+                });
+                
+                dots.forEach(dot => {
+                    dot.addEventListener('click', () => {
+                        currentIndex = parseInt(dot.dataset.index);
+                        updateCarousel();
+                    });
+                });
+                
+                function updateCarousel() {
+                    // Update slides position
+                    container.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
+                    
+                    // Update dots
+                    dots.forEach((dot, index) => {
+                        if (index === currentIndex) {
+                            dot.classList.add('active');
+                        } else {
+                            dot.classList.remove('active');
+                        }
+                    });
+                }
+                
+                // Auto-advance carousel
+                setInterval(() => {
+                    currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
+                    updateCarousel();
+                }, 5000);
+            }
         });
     </script>
 </body>
-</html> 
+</html>
