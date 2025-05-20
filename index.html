@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">MyPortfolio</div>
+            <ul class="nav-links">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        
+        <div class="hero-content">
+            <div class="profile-pic">
+                <div class="photo-placeholder">
+                    <img src="images/team66.jpg" alt="Profile Photo">
+                </div>
+            </div>
+            <div class="hero-text">
+                <h1>Transform Your Ideas</h1>
+                <h1>Into Digital Reality</h1>
+                <p>Web Developer | UI/UX Designer | Problem Solver</p>
+                <div class="cta-buttons">
+                    <a href="#contact" class="btn btn-primary">Hire Me Now!</a>
+                    <a href="#projects" class="btn btn-secondary">See My Work</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-container">
+            <div class="stat-item">
+                <h2>50+</h2>
+                <p>Projects Completed</p>
+            </div>
+            <div class="stat-item">
+                <h2>100%</h2>
+                <p>Client Satisfaction</p>
+            </div>
+            <div class="stat-item">
+                <h2>5+</h2>
+                <p>Years Experience</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Work Section -->
+    <section id="projects" class="featured-work">
+        <h2 class="section-title">Featured Work</h2>
+        
+        <div class="project-cards">
+            <!-- Coding Games Project -->
+            <div class="project-card-wrapper">
+                <a href="projects/coding_games.html" class="project-card-link">
+                    <div class="project-card">
+                        <div class="project-image-container">
+                            <img src="images/thumbnails/coding_games.jpg" alt="Coding Games Project">
+                            <div class="project-overlay" style="background-color: #4158D080">
+                                <div class="project-category">Game Development</div>
+                                <div class="project-type">Educational</div>
+                            </div>
+                        </div>
+                        <div class="project-card-footer">
+                            <h3 class="project-title">Coding Games</h3>
+                            <p class="project-description">Interactive games designed to teach programming concepts.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- E-commerce Project -->
+            <div class="project-card-wrapper">
+                <a href="projects/ecommerce.html" class="project-card-link">
+                    <div class="project-card">
+                        <div class="project-image-container">
+                            <img src="images/thumbnails/ecommerce.jpg" alt="E-commerce Project">
+                            <div class="project-overlay" style="background-color: #C850C080">
+                                <div class="project-category">Web Development</div>
+                                <div class="project-type">E-commerce</div>
+                            </div>
+                        </div>
+                        <div class="project-card-footer">
+                            <h3 class="project-title">E-commerce Platform</h3>
+                            <p class="project-description">Full-featured online store with payment integration.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Finance Project -->
+            <div class="project-card-wrapper">
+                <a href="projects/finance.html" class="project-card-link">
+                    <div class="project-card">
+                        <div class="project-image-container">
+                            <img src="images/thumbnails/finance.jpg" alt="Finance Project">
+                            <div class="project-overlay" style="background-color: #FFC83780">
+                                <div class="project-category">Web Application</div>
+                                <div class="project-type">Financial Tools</div>
+                            </div>
+                        </div>
+                        <div class="project-card-footer">
+                            <h3 class="project-title">Finance Dashboard</h3>
+                            <p class="project-description">Personal finance management and analytics platform.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Transcription Project -->
+            <div class="project-card-wrapper">
+                <a href="projects/transcription.html" class="project-card-link">
+                    <div class="project-card">
+                        <div class="project-image-container">
+                            <img src="images/thumbnails/transcription.jpg" alt="Transcription Project">
+                            <div class="project-overlay" style="background-color: #FF800880">
+                                <div class="project-category">AI Application</div>
+                                <div class="project-type">Speech Recognition</div>
+                            </div>
+                        </div>
+                        <div class="project-card-footer">
+                            <h3 class="project-title">Audio Transcription</h3>
+                            <p class="project-description">AI-powered speech-to-text conversion system.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+            <p>I'm a passionate web developer and designer with over 5 years of experience creating beautiful, functional digital experiences. My expertise includes front-end development (HTML, CSS, JavaScript), back-end development (Python, Flask, Django), and UI/UX design. I take pride in delivering high-quality work that exceeds client expectations and solves real business problems.</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-form">
+            <form id="contactForm">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="message" placeholder="Your Message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 My Portfolio — Developer & Designer</p>
+        <p>
+            <a href="mailto:your.email@example.com">Contact Me</a> |
+            <a href="https://github.com/yourusername" target="_blank">GitHub</a> |
+            <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
+        </p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
