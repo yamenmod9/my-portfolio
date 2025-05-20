@@ -35,25 +35,33 @@ document.addEventListener('DOMContentLoaded', () => {
         // This should match your actual image filenames
         const projectImageMap = {
             'coding_games': [
-                'Screenshot1.png',
-                'Screenshot2.png',
-                'Screenshot3.png'
+                'Screenshot 1.png',
+                'Screenshot 2.png'
             ],
             'ecommerce': [
-                'ecom1.jpg',
-                'ecom2.jpg',
-                'ecom3.jpg',
-                'ecom4.jpg'
+                '1.png',
+                '2.png',
+                '3.png',
+                '4.png',
+                '5.png',
+                '6.png',
+                '7.png',
+                '8.png',
+                '9.png',
+                '10.png',
+                '11.png'
             ],
             'transcription': [
-                'screen1.png',
-                'screen2.png',
-                'screen3.png'
+                '1.png',
+                '2.png',
+                '3.png',
+                '4.png'
             ],
             'finance': [
-                'finance1.jpg',
-                'finance2.jpg',
-                'finance3.jpg'
+                '1.png',
+                '2.png',
+                '3.png',
+                '4.png'
             ]
         };
 
