@@ -1,0 +1,21 @@
+{
+    "id": 1,
+    "title": "Online Store Redesign",
+    "category": "E-Commerce",
+    "type": "Web Development",
+    "color": "#4158D0",
+    "description": "Redesigned an e-commerce website with a modern interface, optimized checkout process, and responsive layout. The new design increased conversion rates by 35% and improved mobile engagement.",
+    "technologies": ["HTML5", "CSS3", "JavaScript", "Bootstrap"],
+    "image": "Screenshot 2025-05-17 230802.png",
+    "features": [
+        "Responsive product grid layout",
+        "Quick-view modals",
+        "Streamlined checkout process",
+        "Mobile-first design"
+    ],
+    "screenshots": [
+        "Screenshot 2025-05-17 230802.png",
+        "Screenshot 2025-05-17 230814.png",
+        "Screenshot 2025-05-17 230852.png"
+    ]
+} 
