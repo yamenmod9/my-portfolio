@@ -8,352 +8,171 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // ======================
-    // Shared Functionality
-    // ======================
-    
-    // Smooth scrolling for anchor links
-    function initSmoothScrolling() {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    
-                    // Update URL without page jump
-                    if (history.pushState) {
-                        history.pushState(null, null, targetId);
-                    } else {
-                        location.hash = targetId;
-                    }
-                }
-            });
-        });
-    }
-
-    // Contact form handling
-    function handleContactForm() {
-        const contactForm = document.getElementById('contactForm');
-        if (!contactForm) return;
-
-        contactForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                name: this.querySelector('#name').value.trim(),
-                email: this.querySelector('#email').value.trim(),
-                message: this.querySelector('#message').value.trim()
-            };
-
-            // Simple validation
-            if (!formData.name || !formData.email || !formData.message) {
-                showFlashMessage('Please fill in all fields', 'error');
-                return;
-            }
-
-            // In a real implementation, you would send this to a server
-            // For GitHub Pages, you could use Formspree or similar service
-            console.log('Form submission:', formData);
-            
-            // Show success message
-            showFlashMessage('Thank you for your message! I will get back to you soon.', 'success');
-            this.reset();
-            
-            // For actual form submission (uncomment and replace with your endpoint):
-            /*
-            try {
-                const response = await fetch('https://formspree.io/f/your-form-id', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok) {
-                    showFlashMessage('Thank you for your message! I will get back to you soon.', 'success');
-                    this.reset();
-                } else {
-                    throw new Error('Form submission failed');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                showFlashMessage('There was an error sending your message. Please try again.', 'error');
-            }
-            */
-        });
-    }
-
-    // Flash message notification
-    function showFlashMessage(message, type = 'success') {
-        let flashContainer = document.querySelector('.flash-messages');
-        
-        if (!flashContainer) {
-            flashContainer = document.createElement('div');
-            flashContainer.className = 'flash-messages';
-            
-            // Insert after the first h2 or at top of body
-            const firstHeading = document.querySelector('h2');
-            if (firstHeading) {
-                firstHeading.insertAdjacentElement('afterend', flashContainer);
-            } else {
-                document.body.insertAdjacentElement('afterbegin', flashContainer);
-            }
-        }
-        
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `flash-message ${type}`;
-        messageDiv.textContent = message;
-        
-        // Add to container and animate in
-        flashContainer.appendChild(messageDiv);
-        setTimeout(() => {
-            messageDiv.classList.add('visible');
-        }, 10);
-        
-        // Remove after delay
-        setTimeout(() => {
-            messageDiv.classList.remove('visible');
-            setTimeout(() => {
-                messageDiv.remove();
-                if (flashContainer.children.length === 0) {
-                    flashContainer.remove();
-                }
-            }, 300);
-        }, 5000);
-    }
-
-    // ======================
-    // Project Page Specific
-    // ======================
-    
-    // Initialize project carousels
-    async function initProjectCarousels() {
+    // Initialize project carousels with exact image paths
+    function initProjectCarousels() {
         const carousels = document.querySelectorAll('[data-project-carousel]');
         if (!carousels.length) return;
 
-        for (const carousel of carousels) {
+        carousels.forEach(carousel => {
             const projectName = carousel.getAttribute('data-project-carousel');
             const container = carousel.querySelector('.carousel-container');
             const dotsContainer = carousel.querySelector('.dots');
-            const prevBtn = carousel.querySelector('.prev');
-            const nextBtn = carousel.querySelector('.next');
             
-            try {
-                // Try to load image data
-                const response = await fetch(`../projects/${projectName}/info.json`);
-                if (!response.ok) throw new Error('Project info not found');
-                
-                const projectData = await response.json();
-                const imageCount = projectData.images || 3; // Default to 3 if not specified
-                
-                // Create carousel items
-                const { slides, dots } = createCarouselItems(container, dotsContainer, projectName, imageCount);
-                
-                // Initialize carousel controls
-                setupCarouselControls(container, slides, dots, prevBtn, nextBtn);
-                
-            } catch (error) {
-                console.error(`Error loading carousel for ${projectName}:`, error);
-                container.innerHTML = '<p class="carousel-error">Could not load project images</p>';
+            // Get the exact image filenames for each project
+            const projectImages = getProjectImages(projectName);
+            
+            if (projectImages.length > 0) {
+                createCarouselItems(container, dotsContainer, projectName, projectImages);
+                setupCarouselControls(carousel);
+            } else {
+                container.innerHTML = '<p class="error">No images found for this project</p>';
             }
-        }
+        });
     }
 
-    // Create carousel slides and dots
-    function createCarouselItems(container, dotsContainer, projectName, imageCount) {
+    // Returns the exact image paths for each project
+    function getProjectImages(projectName) {
+        // This should match your actual image filenames
+        const projectImageMap = {
+            'coding_games': [
+                'Screenshot1.png',
+                'Screenshot2.png',
+                'Screenshot3.png'
+            ],
+            'ecommerce': [
+                'ecom1.jpg',
+                'ecom2.jpg',
+                'ecom3.jpg',
+                'ecom4.jpg'
+            ],
+            'transcription': [
+                'screen1.png',
+                'screen2.png',
+                'screen3.png'
+            ],
+            'finance': [
+                'finance1.jpg',
+                'finance2.jpg',
+                'finance3.jpg'
+            ]
+        };
+
+        return projectImageMap[projectName] || [];
+    }
+
+    // Create carousel items with exact paths
+    function createCarouselItems(container, dotsContainer, projectName, imageFiles) {
         container.innerHTML = '';
         dotsContainer.innerHTML = '';
-        
-        const slides = [];
-        const dots = [];
-        
-        // Supported image extensions
-        const extensions = ['jpg', 'jpeg', 'png', 'webp'];
-        
-        for (let i = 1; i <= imageCount; i++) {
-            // Create slide element
+
+        imageFiles.forEach((imageFile, index) => {
+            // Create slide
             const slide = document.createElement('div');
             slide.className = 'carousel-slide';
             
-            // Try multiple naming patterns
             const img = document.createElement('img');
-            img.alt = `${projectName} screenshot ${i}`;
+            img.src = `../projects/${projectName}/${imageFile}`;
+            img.alt = `${projectName} screenshot ${index + 1}`;
             img.loading = 'lazy';
             
-            // Set src to first found image
-            let imgSrc = '';
-            for (const ext of extensions) {
-                const potentialPaths = [
-                    `../projects/${projectName}/Screenshot_${i}.${ext}`,
-                    `../projects/${projectName}/screenshot${i}.${ext}`,
-                    `../projects/${projectName}/image${i}.${ext}`,
-                    `../projects/${projectName}/${i}.${ext}`
-                ];
-                
-                // Check if image exists (this would need server-side verification in a real app)
-                // For static site, we'll just use the first pattern
-                imgSrc = potentialPaths[0];
-                break;
-            }
-            
-            img.src = imgSrc;
             slide.appendChild(img);
             container.appendChild(slide);
-            slides.push(slide);
-            
-            // Create navigation dot
+
+            // Create dot
             const dot = document.createElement('span');
             dot.className = 'dot';
-            dot.dataset.index = i - 1;
+            dot.dataset.index = index;
             dotsContainer.appendChild(dot);
-            dots.push(dot);
-        }
-        
-        return { slides, dots };
+        });
     }
 
-    // Set up carousel navigation controls
-    function setupCarouselControls(container, slides, dots, prevBtn, nextBtn) {
-        let currentIndex = 0;
-        let autoAdvanceInterval;
+    // Carousel controls setup
+    function setupCarouselControls(carousel) {
+        const container = carousel.querySelector('.carousel-container');
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const dots = carousel.querySelectorAll('.dot');
+        const prevBtn = carousel.querySelector('.prev');
+        const nextBtn = carousel.querySelector('.next');
         
+        let currentIndex = 0;
+        let interval;
+
         function updateCarousel() {
-            // Update slide position
             container.style.transform = `translateX(-${currentIndex * 100}%)`;
             
-            // Update active dot
             dots.forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentIndex);
             });
         }
-        
+
         function goToSlide(index) {
             currentIndex = (index + slides.length) % slides.length;
             updateCarousel();
         }
-        
+
         function nextSlide() {
             goToSlide(currentIndex + 1);
         }
-        
+
         function prevSlide() {
             goToSlide(currentIndex - 1);
         }
-        
-        // Button event listeners
+
+        // Event listeners
         prevBtn.addEventListener('click', prevSlide);
         nextBtn.addEventListener('click', nextSlide);
-        
-        // Dot navigation
+
         dots.forEach(dot => {
             dot.addEventListener('click', () => {
                 goToSlide(parseInt(dot.dataset.index));
             });
         });
-        
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') prevSlide();
-            if (e.key === 'ArrowRight') nextSlide();
-        });
-        
+
         // Auto-advance
         function startAutoAdvance() {
-            autoAdvanceInterval = setInterval(nextSlide, 5000);
+            interval = setInterval(nextSlide, 5000);
         }
-        
+
         function stopAutoAdvance() {
-            clearInterval(autoAdvanceInterval);
+            clearInterval(interval);
         }
-        
+
         startAutoAdvance();
-        
+
         // Pause on hover
-        container.parentElement.addEventListener('mouseenter', stopAutoAdvance);
-        container.parentElement.addEventListener('mouseleave', startAutoAdvance);
-        
-        // Touch support for mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        container.parentElement.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-            stopAutoAdvance();
-        }, { passive: true });
-        
-        container.parentElement.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-            startAutoAdvance();
-        }, { passive: true });
-        
-        function handleSwipe() {
-            const threshold = 50; // Minimum swipe distance
-            const diff = touchStartX - touchEndX;
-            
-            if (diff > threshold) {
-                nextSlide(); // Swipe left
-            } else if (diff < -threshold) {
-                prevSlide(); // Swipe right
-            }
-        }
-        
+        carousel.addEventListener('mouseenter', stopAutoAdvance);
+        carousel.addEventListener('mouseleave', startAutoAdvance);
+
         // Initialize
         updateCarousel();
     }
 
-    // Back button animation
-    function setupBackButton() {
-        const backButton = document.querySelector('.back-button');
-        if (!backButton) return;
-        
-        backButton.addEventListener('mouseenter', () => {
-            backButton.style.transform = 'translateX(-5px)';
-        });
-        
-        backButton.addEventListener('mouseleave', () => {
-            backButton.style.transform = 'translateX(0)';
-        });
-        
-        backButton.addEventListener('click', (e) => {
-            // Add slight delay for animation
-            setTimeout(() => {
-                window.location.href = backButton.href;
-            }, 200);
-        });
-    }
+    // Initialize the carousels
+    initProjectCarousels();
 
-    // ======================
-    // Initialization
-    // ======================
-    
-    // Initialize all components
-    initSmoothScrolling();
-    handleContactForm();
-    setupBackButton();
-    
-    // Check if we're on a project page
-    if (document.querySelector('[data-project-carousel]')) {
-        initProjectCarousels();
+    // Rest of your existing code (smooth scrolling, form handling etc.)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            console.log('Form submitted:', { name, email, message });
+            alert('Thank you for your message! I will get back to you soon.');
+            this.reset();
+        });
     }
-    
-    // Add CSS class for touch devices
-    function detectTouch() {
-        if ('ontouchstart' in window || navigator.maxTouchPoints) {
-            document.documentElement.classList.add('touch-device');
-        } else {
-            document.documentElement.classList.add('no-touch-device');
-        }
-    }
-    
-    detectTouch();
 });
 
 // ======================
